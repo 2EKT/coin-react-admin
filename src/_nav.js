@@ -59,6 +59,7 @@ const _nav = [
     icon: <CIcon icon={cilExternalLink} customClassName="nav-icon" />,
   },
   {
+    
     component: CNavItem,
     name: 'Payments',
     to: '/payment',
@@ -68,7 +69,7 @@ const _nav = [
     component: CNavItem,
     name: 'Settings',
     to: '/setting',
-    
+
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },
   {
