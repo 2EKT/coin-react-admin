@@ -1,8 +1,10 @@
 import React from 'react'
-
+import UserTable from './user_view/UserTable';
 function Users() {
   return (
-    <div>Users</div>
+    <div className="mt-4">
+    <UserTable />
+  </div>
   )
 }
 
