@@ -1,5 +1,5 @@
 import React from 'react';
-import { CCard, CCardBody, CCardHeader, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell } from '@coreui/react';
+import { CCard, CCardBody, CCardHeader, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CLink } from '@coreui/react';
 
 const UserTable = () => {
   // Sample test data
@@ -39,6 +39,7 @@ const UserTable = () => {
               <CTableHeaderCell>Subs Start</CTableHeaderCell>
               <CTableHeaderCell>Subs End</CTableHeaderCell>
               <CTableHeaderCell>User Type</CTableHeaderCell>
+              <CTableHeaderCell>Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -54,6 +55,7 @@ const UserTable = () => {
                 <CTableDataCell>{user.SubsStart}</CTableDataCell>
                 <CTableDataCell>{user.SubsEnd}</CTableDataCell>
                 <CTableDataCell>{user.UserType}</CTableDataCell>
+                <CTableDataCell><CLink className='btn btn-success' href='#/view-user' >View</CLink></CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>

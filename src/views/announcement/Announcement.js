@@ -1,8 +1,8 @@
 import React from 'react'
-
+import Announcements_comp from './annc_table/Announcements_comp';
 function Announcement() {
   return (
-    <div>Announcement</div>
+    <Announcements_comp/>
   )
 }
 
