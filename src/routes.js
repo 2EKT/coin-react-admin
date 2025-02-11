@@ -8,6 +8,8 @@ const Affiliate = React.lazy(() => import('./views/affiliate/Affiliate'));
 const Payment = React.lazy(() => import('./views/payment/Payment'));
 const Setting = React.lazy(() => import('./views/setting/Setting'));
 const User_view = React.lazy(() => import('./views/users/View_Users'));
+const Subscription_plan = React.lazy(() => import('./views/subscription_plan/Subscriptionplan'));
+const Referral = React.lazy(() => import('./views/referral/Referral'));
 const Logout = React.lazy(() => import('./views/logout/Logout'));
 
 const routes = [
@@ -20,6 +22,8 @@ const routes = [
   { path: '/payment', name: 'Payment', element: Payment },
   { path: '/setting', name: 'Setting', element: Setting },
   { path: '/view-user', name: 'User-View', element: User_view },
+  { path: '/Subscription-plan', name: 'Subscription-Plan', element: Subscription_plan },
+  { path: '/referral', name: 'Referral', element: Referral },
   { path: '/logout', name: 'Logout', element: Logout },
 ];
 

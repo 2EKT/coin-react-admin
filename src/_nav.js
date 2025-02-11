@@ -1,25 +1,16 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop,
-  cilExternalLink,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
   cilSpeedometer,
-  cilStar,
-  cilUser,
+  cilPeople,
   cilBullhorn,
   cilSignalCellular3,
+  cilExternalLink,
   cilMoney,
   cilSettings,
   cilExitToApp,
-  cilPeople,
+  cilList,
+  cilShare,  // Added icon for Referral
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -59,7 +50,6 @@ const _nav = [
     icon: <CIcon icon={cilExternalLink} customClassName="nav-icon" />,
   },
   {
-    
     component: CNavItem,
     name: 'Payments',
     to: '/payment',
@@ -67,9 +57,20 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Subscription-Plan',
+    to: '/subscription-plan',
+    icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Referral',  // Added Referral Section
+    to: '/referral',
+    icon: <CIcon icon={cilShare} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Settings',
     to: '/setting',
-
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },
   {
