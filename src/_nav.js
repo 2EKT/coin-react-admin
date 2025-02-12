@@ -43,12 +43,12 @@ const _nav = [
     to: '/signals',
     icon: <CIcon icon={cilSignalCellular3} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Affiliate',
-    to: '/affiliate',
-    icon: <CIcon icon={cilExternalLink} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Affiliate',
+  //   to: '/affiliate',
+  //   icon: <CIcon icon={cilExternalLink} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Payments',
