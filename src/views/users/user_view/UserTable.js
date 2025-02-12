@@ -62,7 +62,7 @@ const toggleVideo =   (id,status) => {
     <CCard className="shadow-lg">
       <CCardHeader className="bg-primary text-white">
         <h4>User Table </h4>
-          <CButton color="primary">Add User</CButton>
+          <CButton color="success">Add User</CButton>
       </CCardHeader>
       <CCardBody>
         <CTable striped hover responsive>
