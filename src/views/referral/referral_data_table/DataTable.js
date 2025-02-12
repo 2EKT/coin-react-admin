@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCard, CCardBody, CCardHeader, CBadge } from '@coreui/react';
 
-const dummyData = [
-  { id: 1, email: 'john@example.com', name: 'John Doe', date: '2024-02-09', active: true, amount: '$100' },
-  { id: 2, email: 'jane@example.com', name: 'Jane Smith', date: '2024-02-08', active: false, amount: '$150' },
-  { id: 3, email: 'alice@example.com', name: 'Alice Johnson', date: '2024-02-07', active: true, amount: '$200' },
-  { id: 4, email: 'bob@example.com', name: 'Bob Williams', date: '2024-02-06', active: false, amount: '$50' },
-];
+
 
 const DataTable = () => {
+  
+  const fetch_referrals = async () => {
+    try {
+        const response = await fetch("https://coinselection.fun/admin_api/fetch_withreferrals.php");
+        const data = await response.json();
+        setusers_api(data);
+        console.log(data);
+    } catch (error) {
+        console.error("Error fetching signals:", error);
+    } finally {
+        // setLoading(false);
+    }
+  };
+  let i = 1 ;
+  const [users_api, setusers_api] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    fetch_referrals();
+    setLoading(false);
+    }, []);
+
   return (
     <CCard>
       <CCardHeader>
@@ -27,15 +43,15 @@ const DataTable = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {dummyData.map((item) => (
+            {users_api.map((item) => (
               <CTableRow key={item.id}>
-                <CTableDataCell>{item.id}</CTableDataCell>
+                <CTableDataCell>{i++}</CTableDataCell>
                 <CTableDataCell>{item.email}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
                 <CTableDataCell>{item.date}</CTableDataCell>
                 <CTableDataCell>
-                  <CBadge color={item.active ? 'success' : 'danger'}>
-                    {item.active ? 'Active' : 'Inactive'}
+                  <CBadge color={item.active == 1  ? 'success' : 'danger'}>
+                    {item.active  == 1  ? 'Active' : 'Inactive'}
                   </CBadge>
                 </CTableDataCell>
                 <CTableDataCell>{item.amount}</CTableDataCell>

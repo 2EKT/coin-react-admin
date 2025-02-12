@@ -21,7 +21,7 @@ const routes = [
   { path: '/affiliate', name: 'Affiliate', element: Affiliate },
   { path: '/payment', name: 'Payment', element: Payment },
   { path: '/setting', name: 'Setting', element: Setting },
-  { path: '/view-user', name: 'User-View', element: User_view },
+  { path: '/view-user/:id', name: 'User-View', element: User_view },
   { path: '/Subscription-plan', name: 'Subscription-Plan', element: Subscription_plan },
   { path: '/referral', name: 'Referral', element: Referral },
   { path: '/logout', name: 'Logout', element: Logout },

@@ -4,7 +4,7 @@ import { CCard, CCardBody, CCardHeader, CTable, CTableHead, CTableRow, CTableHea
 const UserTable = () => {
   // Sample test data
 const [users_api, setusers_api] = useState([]);
-const [disp,setdisp]=useState(false);
+// const [disp,setdisp]=useState(false);
 
 const fetchUsers = async () => {
   try {
@@ -24,22 +24,7 @@ useEffect(()  => {
 fetchUsers();
   
 }, []);
-  const users = [
-    {
-      Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john@example.com', Phone: '1234567890',
-      password: '******', Country: 'USA', Address: '123 Street', ImageUrl: '', WalletAmount: 500,
-      TotalEarning: 1500, TotalWithdrawal: 1000, SubsType: 'Premium', SubsName: 'Gold',
-      SubsStart: '2024-01-01', SubsEnd: '2024-12-31', DateEnroll: '2023-06-15', UserType: 'Member',
-      Reff_ID: 'REF123', usdt_id: 'USDT001', Blank1: '', Blank2: '', Blank3: '', Blank4: ''
-    },
-    {
-      Id: 2, FirstName: 'Jane', LastName: 'Smith', Email: 'jane@example.com', Phone: '9876543210',
-      password: '******', Country: 'UK', Address: '456 Avenue', ImageUrl: '', WalletAmount: 700,
-      TotalEarning: 2000, TotalWithdrawal: 1300, SubsType: 'Standard', SubsName: 'Silver',
-      SubsStart: '2024-02-01', SubsEnd: '2024-12-31', DateEnroll: '2023-07-20', UserType: 'Member',
-      Reff_ID: 'REF456', usdt_id: 'USDT002', Blank1: '', Blank2: '', Blank3: '', Blank4: ''
-    }
-  ];
+let i = 1 ;
 
 
   return (
@@ -67,17 +52,17 @@ fetchUsers();
           <CTableBody>
             {users_api.map(user => (
               <CTableRow key={user.Id}>
-                <CTableDataCell>{user.Id}</CTableDataCell>
-                <CTableDataCell>{user.FirstName}</CTableDataCell>
-                <CTableDataCell>{user.LastName}</CTableDataCell>
-                <CTableDataCell>{user.Email}</CTableDataCell>
-                <CTableDataCell>{user.Phone}</CTableDataCell>
-                <CTableDataCell>{user.Country}</CTableDataCell>
-                <CTableDataCell>{user.SubsType} ({user.SubsName})</CTableDataCell>
+                <CTableDataCell>{i++}</CTableDataCell>
+                <CTableDataCell>{user.FirstName == '' ? 'no data' : user.FirstName }</CTableDataCell>
+                <CTableDataCell>{user.LastName == '' ? 'no data' : user.LastName }</CTableDataCell>
+                <CTableDataCell>{user.Email == '' ? 'no data' : user.Email}</CTableDataCell>
+                <CTableDataCell>{user.Phone == '' ? 'no data' :user.Phone}</CTableDataCell>
+                <CTableDataCell>{user.Country == '' ? 'no data' : user.Country}</CTableDataCell>
+                <CTableDataCell>{user.SubsType} </CTableDataCell>
                 <CTableDataCell>{user.SubsStart}</CTableDataCell>
                 <CTableDataCell>{user.SubsEnd}</CTableDataCell>
                 <CTableDataCell>{user.UserType}</CTableDataCell>
-                <CTableDataCell><CLink className='btn btn-success' href='#/view-user' >View</CLink></CTableDataCell>
+                <CTableDataCell><CLink className='btn btn-success' href={`#/view-user/${user.Id}`}  >View</CLink></CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>

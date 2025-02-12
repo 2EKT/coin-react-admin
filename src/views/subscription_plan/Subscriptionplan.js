@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
 import {
   CButton,
   CCard,
@@ -22,6 +23,19 @@ import {
 
 const SubscriptionPlan = () => {
   // Dummy data
+
+  const fetchUsers = async () => {
+    try {
+        const response = await fetch("https://coinselection.fun/admin_api/fetch_withreferrals.php");
+        const data = await response.json();
+        setusers_api(data);
+        console.log(data);
+    } catch (error) {
+        console.error("Error fetching signals:", error);
+    } finally {
+        // setLoading(false);
+    }
+  };
   const initialPlans = [
     { id: 1, title: 'Basic Plan', package: 'Silver', amount: '$10', days: 30, date: '2025-02-01' },
     { id: 2, title: 'Premium Plan', package: 'Gold', amount: '$25', days: 60, date: '2025-02-05' },
