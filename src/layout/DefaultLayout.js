@@ -1,7 +1,19 @@
-import React from 'react'
-import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index';
 
 const DefaultLayout = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+
+    if (!username || !password) {
+      navigate('/login'); // Redirect if not logged in
+    }
+  }, [navigate]);
+
+
   return (
     <div>
       <AppSidebar />
@@ -13,7 +25,8 @@ const DefaultLayout = () => {
         <AppFooter />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DefaultLayout
+export default DefaultLayout;
+

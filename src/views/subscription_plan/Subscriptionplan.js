@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-
+import React, { useEffect, useState } from 'react';
 import {
   CButton,
   CCard,
@@ -19,65 +18,90 @@ import {
   CFormInput,
   CFormLabel,
   CForm
-} from '@coreui/react'
+} from '@coreui/react';
 
 const SubscriptionPlan = () => {
-  // Dummy data
+  const [plans, setPlans] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [form, setForm] = useState({ id: '', title: '', package: '', amount: '', days: '', date: '' });
 
-  const fetchUsers = async () => {
-    try {
-        const response = await fetch("https://coinselection.fun/admin_api/fetch_withreferrals.php");
-        const data = await response.json();
-        setusers_api(data);
-        console.log(data);
-    } catch (error) {
-        console.error("Error fetching signals:", error);
-    } finally {
-        // setLoading(false);
-    }
+  useEffect(() => {
+    fetchPlans();
+  }, []);
+
+  // Fetch plans from API
+  const fetchPlans = async () => {
+    const response = await fetch('https://coinselection.fun/admin_api/select_plan.php');
+    const data = await response.json();
+    console.log(data);
+
+    setPlans(data);
   };
-  const initialPlans = [
-    { id: 1, title: 'Basic Plan', package: 'Silver', amount: '$10', days: 30, date: '2025-02-01' },
-    { id: 2, title: 'Premium Plan', package: 'Gold', amount: '$25', days: 60, date: '2025-02-05' },
-    { id: 3, title: 'Elite Plan', package: 'Platinum', amount: '$50', days: 90, date: '2025-02-10' },
-  ]
-
-  const [plans, setPlans] = useState(initialPlans)
-  const [modal, setModal] = useState(false)
-  const [editMode, setEditMode] = useState(false)
-  const [form, setForm] = useState({ id: '', title: '', package: '', amount: '', days: '', date: '' })
 
   // Handle form input change
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   // Open Add/Edit Modal
   const openModal = (plan = null) => {
     if (plan) {
-      setForm(plan)
-      setEditMode(true)
+      setForm({
+        id: plan.Id, 
+        title: plan.Title, 
+        package: plan.Packege,  // Fixed incorrect spelling
+        amount: plan.Amount, 
+        days: plan.Days, 
+        date: plan.Date
+      });
+      setEditMode(true);
     } else {
-      setForm({ id: '', title: '', package: '', amount: '', days: '', date: '' })
-      setEditMode(false)
+      setForm({ id: '', title: '', package: '', amount: '', days: '', date: '' });
+      setEditMode(false);
     }
-    setModal(true)
-  }
+    setModal(true);
+  };
 
-  // Save New or Updated Plan
-  const handleSave = () => {
-    if (editMode) {
-      setPlans(plans.map((p) => (p.id === form.id ? form : p)))
-    } else {
-      setPlans([...plans, { ...form, id: plans.length + 1 }])
+  // Save or Update Subscription Plan
+  const handleSave = async () => {
+    const url = editMode
+      ? `https://coinselection.fun/admin_api/update_plan.php?id=${form.id}`
+      : 'https://coinselection.fun/admin_api/save_plan.php';
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+
+      const result = await response.json();
+
+      if (result[0].result === "1") {
+        fetchPlans();
+        setModal(false);
+      } else {
+        alert("Failed to save subscription.");
+      }
+    } catch (e) {
+      console.error("Error saving plan:", e);
+      alert("Something went wrong.");
     }
-    setModal(false)
-  }
+  };
 
   // Delete Plan
-  const handleDelete = (id) => {
-    setPlans(plans.filter((p) => p.id !== id))
-  }
+  const handleDelete = async (id) => {
+    const response = await fetch(`https://coinselection.fun/admin_api/delete_plan.php?id=${id}`, {
+      method: 'GET'
+    });
+
+    const result = await response.json();
+
+    if (result[0].result === "1") {
+      fetchPlans();
+    }
+  };
 
   return (
     <CCard>
@@ -100,16 +124,16 @@ const SubscriptionPlan = () => {
           </CTableHead>
           <CTableBody>
             {plans.map((plan) => (
-              <CTableRow key={plan.id}>
-                <CTableDataCell>{plan.id}</CTableDataCell>
-                <CTableDataCell>{plan.title}</CTableDataCell>
-                <CTableDataCell>{plan.package}</CTableDataCell>
-                <CTableDataCell>{plan.amount}</CTableDataCell>
-                <CTableDataCell>{plan.days}</CTableDataCell>
-                <CTableDataCell>{plan.date}</CTableDataCell>
+              <CTableRow key={plan.Id}>
+                <CTableDataCell>{plan.Id}</CTableDataCell>
+                <CTableDataCell>{plan.Title}</CTableDataCell>
+                <CTableDataCell>{plan.Packege}</CTableDataCell> {/* Fixed spelling */}
+                <CTableDataCell>{plan.Amount}</CTableDataCell>
+                <CTableDataCell>{plan.Days}</CTableDataCell>
+                <CTableDataCell>{plan.Date}</CTableDataCell>
                 <CTableDataCell>
                   <CButton color="warning" size="sm" onClick={() => openModal(plan)}>Edit</CButton>{' '}
-                  <CButton color="danger" size="sm" onClick={() => handleDelete(plan.id)}>Delete</CButton>
+                  <CButton color="danger" size="sm" onClick={() => handleDelete(plan.Id)}>Delete</CButton> {/* Fixed ID reference */}
                 </CTableDataCell>
               </CTableRow>
             ))}
@@ -152,7 +176,7 @@ const SubscriptionPlan = () => {
         </CModalFooter>
       </CModal>
     </CCard>
-  )
-}
+  );
+};
 
-export default SubscriptionPlan
+export default SubscriptionPlan;

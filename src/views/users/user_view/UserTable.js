@@ -18,6 +18,34 @@ const fetchUsers = async () => {
       // setLoading(false);
   }
 };
+
+const update_status = async (id ,status) => {
+  try {
+    
+    if (status != "") {
+     
+      
+      const formData = new FormData()
+      formData.append('id', id)
+      formData.append('status', status == 1 ? 0 : 1)
+      const response = await fetch(
+        'https://coinselection.fun/admin_api/update_user_status.php',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+      
+      const data = await response.json();
+      console.log(data);
+     
+         }
+  } catch (error) {
+      console.error("Error fetching signals:", error);
+  } finally {
+      // setLoading(false);
+  }
+};
 useEffect(()  => {
   // console.log(disp);
 //  console.log( );
@@ -25,7 +53,10 @@ fetchUsers();
   
 }, []);
 let i = 1 ;
-
+const toggleVideo =   (id,status) => {
+  setusers_api(users_api.map(a => (a.Id === id ? { ...a, active: !a.active } : a)));
+  //  await update_status(status == true ? 0 : 1, id )
+};
 
   return (
     <CCard className="shadow-lg">
@@ -46,6 +77,7 @@ let i = 1 ;
               <CTableHeaderCell>Subs Start</CTableHeaderCell>
               <CTableHeaderCell>Subs End</CTableHeaderCell>
               <CTableHeaderCell>User Type</CTableHeaderCell>
+              <CTableHeaderCell>Active</CTableHeaderCell>
               <CTableHeaderCell>Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -62,7 +94,13 @@ let i = 1 ;
                 <CTableDataCell>{user.SubsStart}</CTableDataCell>
                 <CTableDataCell>{user.SubsEnd}</CTableDataCell>
                 <CTableDataCell>{user.UserType}</CTableDataCell>
-                <CTableDataCell><CLink className='btn btn-success' href={`#/view-user/${user.Id}`}  >View</CLink></CTableDataCell>
+                {/* <CTableDataCell>{user.active}</CTableDataCell> */}
+               <CTableDataCell>
+               <CButton className={user.active == 0 ? 'btn btn-danger' : 'btn btn-success'}  size="sm" onClick={() => {update_status(user.Id ,user.active) , toggleVideo(user.Id ,user.active)}}>
+                                        {user.active != 0 ? 'Active' : 'De-Active'}
+                </CButton>
+               </CTableDataCell>
+                <CTableDataCell><CLink className='btn btn-primary' href={`#/view-user/${user.Id}`}  >View</CLink></CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>
