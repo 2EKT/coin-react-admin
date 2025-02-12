@@ -43,12 +43,12 @@ const _nav = [
     to: '/signals',
     icon: <CIcon icon={cilSignalCellular3} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Affiliate',
-  //   to: '/affiliate',
-  //   icon: <CIcon icon={cilExternalLink} customClassName="nav-icon" />,
-  // },
+  {
+    component: CNavItem,
+    name: 'WithDrawal',
+    to: '/with-drawal',
+    icon: <CIcon icon={cilExternalLink} customClassName="nav-icon" />,
+  },
   {
     component: CNavItem,
     name: 'Payments',
@@ -63,16 +63,16 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Referral',  // Added Referral Section
+    name: 'Affiliate',  // Added Referral Section
     to: '/referral',
     icon: <CIcon icon={cilShare} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Settings',
-    to: '/setting',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Settings',
+  //   to: '/setting',
+  //   icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Logout',

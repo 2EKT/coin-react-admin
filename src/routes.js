@@ -11,6 +11,7 @@ const User_view = React.lazy(() => import('./views/users/View_Users'));
 const Subscription_plan = React.lazy(() => import('./views/subscription_plan/Subscriptionplan'));
 const Referral = React.lazy(() => import('./views/referral/Referral'));
 const Logout = React.lazy(() => import('./views/logout/Logout'));
+const _505_page = React.lazy(() => import('./views/pages/page500/Page500'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -18,8 +19,8 @@ const routes = [
   { path: '/users', name: 'Users', element: Users },
   { path: '/announcement', name: 'Announcement', element: Announcement },
   { path: '/signals', name: 'Signals', element: Signals },
-  { path: '/affiliate', name: 'Affiliate', element: Affiliate },
-  { path: '/payment', name: 'Payment', element: Payment },
+  { path: '/with-drawal', name: 'WithDrawal', element: _505_page },
+  { path: '/payment', name: 'Payment', element: _505_page },
   { path: '/setting', name: 'Setting', element: Setting },
   { path: '/view-user/:id', name: 'User-View', element: User_view },
   { path: '/Subscription-plan', name: 'Subscription-Plan', element: Subscription_plan },

@@ -28,7 +28,7 @@ const DataTable = () => {
   return (
     <CCard>
       <CCardHeader>
-        <h5>User Referral</h5>
+        <h5>User Affiliate</h5>
       </CCardHeader>
       <CCardBody>
         <CTable hover responsive>
