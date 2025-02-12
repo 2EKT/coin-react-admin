@@ -122,7 +122,7 @@ function Card() {
             </CCardHeader>
             <CCardBody className="text-center">
               <CImage
-                src={'https://coinselection.fun/' + user.ImageUrl || '/default-avatar.jpg'}
+                src={'https://coinselection.fun/appApi/' + user.ImageUrl || '/default-avatar.jpg'}
                 width="100"
                 height="100"
                 className="rounded-circle mb-3"
