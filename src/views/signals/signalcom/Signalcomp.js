@@ -88,7 +88,7 @@ function Signalcomp() {
               <CCard className="shadow-lg">
                 <CCardHeader className="bg-primary text-white d-flex justify-content-between">
                   <h5>Trading Signals</h5>
-                  <CButton color="success" onClick={() => { setModal(true) }}>Add New Signal</CButton>
+                  <CButton color="success" onClick={() => { setModal(true) , setFormData({ Title : '' , Date : '' , Coin : ''  , Entry : '', TakeProfit : '' , Time : '' , StopLoss : '' , Active : '' }) , setEditData(null) }}>Add New Signal</CButton>
                 </CCardHeader>
                 <CCardBody>
                   <CTable striped hover responsive>
