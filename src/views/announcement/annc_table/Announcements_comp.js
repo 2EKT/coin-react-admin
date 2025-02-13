@@ -53,8 +53,8 @@ function Announcements_comp() {
 
         try {
             const url = editData
-                ? `http://coinselection.fun/admin_api/update_anouncement.php?id=${editData.id}`
-                : "http://coinselection.fun/admin_api/insert_anouncement.php";
+                ? `https://coinselection.fun/admin_api/update_anouncement.php?id=${editData.id}`
+                : "https://coinselection.fun/admin_api/insert_anouncement.php";
 
             const response = await fetch(url, {
                 method: "POST",
@@ -84,7 +84,7 @@ function Announcements_comp() {
         if (!window.confirm("Are you sure you want to delete this announcement?")) return;
 
         try {
-            const response = await fetch(`http://coinselection.fun/admin_api/delete_anouncement.php?id=${id}`, {
+            const response = await fetch(`https://coinselection.fun/admin_api/delete_anouncement.php?id=${id}`, {
                 method: "GET",
             });
 
