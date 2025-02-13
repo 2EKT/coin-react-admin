@@ -134,6 +134,11 @@ function Card() {
               <p>Phone: {user.Phone}</p>
               <p>Address: {user.Address}</p>
               <p>Country: {user.Country}</p>
+              <p>USDT ID: {user.usdt_id}</p>
+              <p>Sub Type: {user.SubsType || 'No data'}</p>
+              <p>Sub Name: {user.SubsName || 'No data'}</p>
+              <p>Subs Start: {user.SubsStart || 'No data'}</p>
+              <p>Subs End: {user.SubsEnd || 'No data'}</p>
             </CCardBody>
           </CCard>
         </CCol>

@@ -21,9 +21,12 @@ const WithdrawalTable = () => {
 
   const fetchWithdrawals = async () => {
     try {
+      
       const response = await fetch("https://coinselection.fun/admin_api/fetch_withdrwal_all.php");
       const data = await response.json();
       setWithdrawals(data);
+      console.log(data);
+      
     } catch (error) {
       console.error("Error fetching withdrawals:", error);
     }
@@ -31,12 +34,17 @@ const WithdrawalTable = () => {
 
   const updateStatus = async (id, status) => {
     try {
+      // { id, status }
+      const formData = new FormData();
+      formData.append('id', id);
+      formData.append('status',status);
       await fetch('https://coinselection.fun/admin_api/update_withdrawal_status.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, status })
+        // headers: { 'Content-Type': 'application/json' },
+        body: formData
       });
       setWithdrawals(withdrawals.map(w => (w.id === id ? { ...w, status } : w)));
+      alert("Status Update")
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -44,13 +52,17 @@ const WithdrawalTable = () => {
 
   const updateDescription = async (id, description) => {
     try {
+      const formData = new FormData();
+      formData.append('id', id);
+      formData.append('description',description);
       await fetch('https://coinselection.fun/admin_api/update_withdrawal_description.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, description })
+        // headers: { 'Content-Type': 'application/json' },
+        body: formData
       });
       setWithdrawals(withdrawals.map(w => (w.id === id ? { ...w, description } : w)));
       setEditingDescription(null);
+      alert("Description Update")
     } catch (error) {
       console.error("Error updating description:", error);
     }
@@ -88,10 +100,12 @@ const WithdrawalTable = () => {
                 <CTableDataCell>{withdrawal.date}</CTableDataCell>
                 <CTableDataCell>
                   <CFormSelect
-                    value={withdrawal.status}
+                    // value={withdrawal.status}
                     onChange={(e) => updateStatus(withdrawal.id, e.target.value)}
+                    defaultValue={ withdrawal.status }
                   >
-                    <option value="Pending">Pending</option>
+                   
+                   <option value="Pending">Pending</option>
                     <option value="Approved">Approved</option>
                     <option value="Rejected">Rejected</option>
                   </CFormSelect>
