@@ -21,7 +21,7 @@ const routes = [
   { path: '/announcement', name: 'Announcement', element: Announcement },
   { path: '/signals', name: 'Signals', element: Signals },
   { path: '/with-drawal', name: 'WithDrawal', element: Withdrwal },
-  { path: '/payment', name: 'Payment', element: _505_page },
+  { path: '/payment', name: 'Payment', element: Payment },
   { path: '/setting', name: 'Setting', element: Setting },
   { path: '/view-user/:id', name: 'User-View', element: User_view },
   { path: '/Subscription-plan', name: 'Subscription-Plan', element: Subscription_plan },

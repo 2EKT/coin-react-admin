@@ -13,6 +13,7 @@ import {
   CTableBody,
   CTableDataCell,
   CImage,
+  CBadge
 } from '@coreui/react'
 
 function Card() {
@@ -46,7 +47,7 @@ function Card() {
       setLoading(false)
     }
   }
-  const fetchdrawalById = async () => {
+  const fetchTransactionById = async () => {
     try {
       const formData = new FormData()
       formData.append('id', id)
@@ -74,6 +75,33 @@ function Card() {
     }
   }
 
+  const fetchdrawalById = async () => {
+    try {
+      const formData = new FormData()
+      formData.append('id', id)
+
+      const response = await fetch(
+        'https://coinselection.fun/admin_api/fetch_Payments_by_id.php',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+
+      const data = await response.json()
+      if (data[0].result != 0) {
+        // setTransactions(data || [])
+        setWithdrawals(data || [])
+      }
+
+      // setUser(data[0]);
+      console.log('fetchdrawalById', data)
+    } catch (error) {
+      console.error('Error fetching With Drawal amount:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
   const fetchreferralsById = async () => {
     try {
       const formData = new FormData()
@@ -105,6 +133,7 @@ function Card() {
   useEffect(() => {
     fetchUserById()
     fetchdrawalById()
+    fetchTransactionById()
     fetchreferralsById()
   }, [id])
 
@@ -208,7 +237,7 @@ function Card() {
         <CCol md={6}>
           <CCard className="shadow-lg">
             <CCardHeader className="bg-danger text-white">
-              <h5>Withdrawal History</h5>
+              <h5>With Drawal History</h5>
             </CCardHeader>
             <CCardBody>
               <CTable striped hover responsive>
@@ -220,15 +249,16 @@ function Card() {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {withdrawals.length > 0 &&
-                  withdrawals.some((wd) => wd.status.toLowerCase() == 'Approved') ? (
+                  {withdrawals.length > 0 ?
+                  (
                     withdrawals
-                      .filter((wd) => wd.status.toLowerCase() !== 'pending')
                       .map((wd) => (
-                        <CTableRow key={wd.id}>
-                          <CTableDataCell>{wd.date}</CTableDataCell>
-                          <CTableDataCell>${wd.amount}</CTableDataCell>
-                          <CTableDataCell>{wd.status}</CTableDataCell>
+                        <CTableRow key={wd.Id}>
+                          <CTableDataCell>{wd.Date}</CTableDataCell>
+                          <CTableDataCell>${wd.Amount}</CTableDataCell>
+                          <CTableDataCell>  <CBadge color={wd.Payment_Success == 1  ? 'success' : 'danger'}>
+                                                              {wd.Payment_Success  == 1  ? 'Success' : 'Fail'}
+                                                            </CBadge></CTableDataCell>
                         </CTableRow>
                       ))
                   ) : (

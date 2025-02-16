@@ -18,9 +18,11 @@ import {
   CModalFooter,
   CForm,
   CFormInput,
-  CFormSelect
+  CFormSelect,
+  CRow
 } from '@coreui/react';
-
+import ReactPaginate from 'react-paginate';
+import * as XLSX from 'xlsx';
 const UserTable = () => {
   const [users_api, setUsersApi] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,7 +30,22 @@ const UserTable = () => {
   const [subscriptionPlans, setSubscriptionPlans] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [subscriptionModal, setSubscriptionModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5;
+  const filteredUsers = users_api.filter(user =>
+    user.FirstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.LastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.Email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const pageCount = Math.ceil(filteredUsers.length / itemsPerPage);
+  const paginatedUsers = filteredUsers.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   const fetchUsers = async () => {
     try {
       const response = await fetch("https://coinselection.fun/admin_api/fetch_users.php");
@@ -37,6 +54,12 @@ const UserTable = () => {
     } catch (error) {
       console.error("Error fetching users:", error);
     }
+  };
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(users);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
+    XLSX.writeFile(workbook, "User_Data.xlsx");
   };
 
   const updateStatus = async (id, status) => {
@@ -83,6 +106,10 @@ const UserTable = () => {
       console.error("Error fetching subscription plans:", error);
     }
   };
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(0);
+  };
 
   const updateSubscription = async () => {
     try {
@@ -108,9 +135,19 @@ const UserTable = () => {
     <CCard className="shadow-lg">
       <CCardHeader className="bg-primary text-white d-flex justify-content-between">
         <h4>User Table</h4>
-        <CButton color="success" onClick={() => setModalVisible(true)}>Add User</CButton>
+      <CRow>
+      <CButton color="success" onClick={() => setModalVisible(true)}>Add User</CButton>
+      <CButton color="success mt-2" onClick={exportToExcel}>Export to Excel</CButton>
+      </CRow>
+      
       </CCardHeader>
       <CCardBody>
+      <CFormInput
+          placeholder="Search"
+          value={searchQuery}
+          onChange={handleSearch}
+          className="mb-3"
+        />
         <CTable striped hover responsive>
           <CTableHead>
             <CTableRow>
@@ -129,7 +166,7 @@ const UserTable = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {users_api.map((user, index) => (
+          {paginatedUsers.map((user, index) => (
               <CTableRow key={user.Id}>
                 <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{user.FirstName || 'No data'}</CTableDataCell>
@@ -162,6 +199,20 @@ const UserTable = () => {
             ))}
           </CTableBody>
         </CTable>
+        <ReactPaginate
+          previousLabel={'Prev'}
+          nextLabel={'Next'}
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={'pagination justify-content-center mt-3'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+          previousClassName={'page-item'}
+          previousLinkClassName={'page-link'}
+          nextClassName={'page-item'}
+          nextLinkClassName={'page-link'}
+          activeClassName={'active'}
+        />
       </CCardBody>
 
       {/* Add User Modal */}
