@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
     CCard, CCardBody, CCardHeader, CRow, CCol, CTable, CTableHead,
     CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton,
     CForm, CFormInput, CFormTextarea, CModal, CModalHeader,
     CModalTitle, CModalBody, CModalFooter
 } from '@coreui/react';
-
+import JoditEditor from 'jodit-react';
 function Announcements_comp() {
     const [announcements, setAnnouncements] = useState([]);
     const [modal, setModal] = useState(false);
     const [disp, setdisp] = useState(false);
     const [editData, setEditData] = useState(null);
-    const [formData, setFormData] = useState({ title: '', description: '', video: '' });
-
+    const [formData, setFormData] = useState({ title: '', description: '', video: '',blank1:'' });
+    const editor = useRef(null);
+    const [content, setContent] = useState('');
+    const config = useMemo(() => ({
+        readonly: false, // all options from https://xdsoft.net/jodit/docs/,
+        placeholder:   'Enter View Detail'
+    }),
+    []
+);
     const fetchNotifications = async () => {
         try {
             const response = await fetch('https://coinselection.fun/appApi/fetchnNotification.php');
@@ -29,7 +36,11 @@ function Announcements_comp() {
     useEffect(() => {
         fetchNotifications();
     }, []);
-
+    const handleEditorChange = (data) => {
+        // const data = editor.getData();
+        // setFormData({ ...formData, blank1: data });
+        setFormData({ ...formData, blank1: data });
+    };
     // Handle Input Change
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,7 +49,7 @@ function Announcements_comp() {
     // Open Modal for Add/Edit
     const handleOpenModal = (announcement = null) => {
         setEditData(announcement);
-        setFormData(announcement ? { ...announcement } : { title: '', description: '', video: '' });
+        setFormData(announcement ? { ...announcement } : { title: '', description: '', video: '' ,blank1:''});
         setModal(true);
     };
 
@@ -47,6 +58,7 @@ function Announcements_comp() {
         const form = new FormData();
         form.append("title", formData.title);
         form.append("description", formData.description);
+        form.append("blank1", formData.blank1);
         form.append("date", new Date().toISOString().split('T')[0]); // Current date in YYYY-MM-DD
         form.append("video", formData.video);
         form.append("showVideo", 'true'); // Ensure this is 'true' if you want to show the video
@@ -118,7 +130,9 @@ function Announcements_comp() {
                                         <CTableHeaderCell>ID</CTableHeaderCell>
                                         <CTableHeaderCell>Title</CTableHeaderCell>
                                         <CTableHeaderCell>Description</CTableHeaderCell>
+                                        <CTableHeaderCell>View Detail</CTableHeaderCell>
                                         <CTableHeaderCell>Video</CTableHeaderCell>
+                                        
                                         <CTableHeaderCell>Actions</CTableHeaderCell>
                                     </CTableRow>
                                 </CTableHead>
@@ -128,6 +142,7 @@ function Announcements_comp() {
                                             <CTableDataCell>{announcement.id}</CTableDataCell>
                                             <CTableDataCell>{announcement.title}</CTableDataCell>
                                             <CTableDataCell>{announcement.description}</CTableDataCell>
+                                            <CTableDataCell dangerouslySetInnerHTML={{ __html: announcement.blank1 }}></CTableDataCell>
                                             <CTableDataCell>
                                                 {announcement.showVideo === "1" && announcement.video ? (
                                                     <iframe
@@ -182,8 +197,17 @@ function Announcements_comp() {
                             onChange={handleChange}
                             placeholder="Description"
                         />
+                       <JoditEditor
+                        //  placeholder="Description"
+                        className="mb-2 mt-3"
+                        ref={editor}
+		             	config={config}
+                        name='blank1'
+                        value={formData.blank1}
+                            onChange={handleEditorChange}
+                        />
                         <CFormInput
-                            className="mb-2"
+                            className="mb-2 mt-3"
                             name="video"
                             value={formData.video}
                             onChange={handleChange}

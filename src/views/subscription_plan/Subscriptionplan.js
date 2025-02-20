@@ -24,7 +24,7 @@ const SubscriptionPlan = () => {
   const [plans, setPlans] = useState([]);
   const [modal, setModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [form, setForm] = useState({ id: '', title: '', package: '', amount: '', days: '', date: '' });
+  const [form, setForm] = useState({ id: '', title: '', package: '', amount: '', days: '', date: '' ,b1:'' , b2:'' });
 
   useEffect(() => {
     fetchPlans();
@@ -57,7 +57,7 @@ const SubscriptionPlan = () => {
       });
       setEditMode(true);
     } else {
-      setForm({ id: '', title: '', package: '', amount: '', days: '', date: '' });
+      setForm({ id: '', title: '', package: '', amount: '', days: '', date: '' , b1:'' , b2:'' });
       setEditMode(false);
     }
     setModal(true);
@@ -81,6 +81,7 @@ const SubscriptionPlan = () => {
       if (result[0].result === "1") {
         fetchPlans();
         setModal(false);
+        alert("Update Subscription ");
       } else {
         alert("Failed to save subscription.");
       }
@@ -119,6 +120,8 @@ const SubscriptionPlan = () => {
               <CTableHeaderCell>Amount</CTableHeaderCell>
               <CTableHeaderCell>Days</CTableHeaderCell>
               <CTableHeaderCell>Date</CTableHeaderCell>
+              <CTableHeaderCell>Comision</CTableHeaderCell>
+              <CTableHeaderCell>Stripe Price ID</CTableHeaderCell>
               <CTableHeaderCell>Actions</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -131,6 +134,8 @@ const SubscriptionPlan = () => {
                 <CTableDataCell>{plan.Amount}</CTableDataCell>
                 <CTableDataCell>{plan.Days}</CTableDataCell>
                 <CTableDataCell>{plan.Date}</CTableDataCell>
+                <CTableDataCell>{plan.B1}</CTableDataCell>
+                <CTableDataCell>{plan.B2}</CTableDataCell>
                 <CTableDataCell>
                   <CButton color="warning" size="sm" onClick={() => openModal(plan)}>Edit</CButton>{' '}
                   <CButton color="danger" size="sm" onClick={() => handleDelete(plan.Id)}>Delete</CButton> {/* Fixed ID reference */}
@@ -163,6 +168,14 @@ const SubscriptionPlan = () => {
             <div className="mb-3">
               <CFormLabel>Days</CFormLabel>
               <CFormInput type="number" name="days" value={form.days} onChange={handleChange} />
+            </div>
+            <div className="mb-3">
+              <CFormLabel>Comision </CFormLabel>
+              <CFormInput type="text" name="b1" value={form.B1} onChange={handleChange} />
+            </div> 
+            <div className="mb-3">
+              <CFormLabel>Stripe Price ID </CFormLabel>
+              <CFormInput type="text" name="b2" value={form.B2} onChange={handleChange} />
             </div>
             <div className="mb-3">
               <CFormLabel>Date</CFormLabel>
