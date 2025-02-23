@@ -9,7 +9,7 @@ import {
 function SignalComp() {
     const [signals, setSignals] = useState([]);
     const [modal, setModal] = useState(false);
-    const [formData, setFormData] = useState({ Title: '', Date: '', Coin: '', Entry: '', TakeProfit: '', Time: '', StopLoss: '', Active: '' });
+    const [formData, setFormData] = useState({ Title: '', Date: '', Coin: '', Entry: '', TakeProfit: '', Time: '', StopLoss: '', Active: '' ,Blank1:null });
     const [editData, setEditData] = useState(null);
 
     const fetchSignals = async () => {
@@ -21,7 +21,14 @@ function SignalComp() {
             console.error("Error fetching signals:", error);
         }
     };
-
+    const handleChange_file = (e) => {
+      const { name, value, files } = e.target;
+      if (files) {
+          setFormData({ ...formData, Blank1: files[0] });
+      } else {
+          setFormData({ ...formData, [name]: value });
+      }
+  };
     useEffect(() => {
         fetchSignals();
     }, []);
@@ -36,12 +43,20 @@ function SignalComp() {
         try {
             const method = editData ? 'POST' : 'POST';
             const url = editData ? `https://coinselection.fun/admin_api/update_signal.php?id=${editData.Id}` : "https://coinselection.fun/admin_api/insertsignal.php";
-            
-            const response = await fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(formData).toString(),
+            const formDataToSend = new FormData();
+            Object.entries(formData).forEach(([key, value]) => {
+                formDataToSend.append(key, value);
             });
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formDataToSend,
+            }); 
+            // const response = await fetch(url, {
+            //     method,
+            //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            //     body: new URLSearchParams(formData).toString(),
+            // });
 
             const data = await response.json();
             console.log(data);
@@ -51,7 +66,7 @@ function SignalComp() {
                 fetchSignals(); // Refresh the signal list
                 setModal(false);
                 setEditData(null);
-                setFormData({ Title: '', Date: '', Coin: '', Entry: '', TakeProfit: '', Time: '', StopLoss: '', Active: '' });
+                setFormData({ Title: '', Date: '', Coin: '', Entry: '', TakeProfit: '', Time: '', StopLoss: '', Active: '' ,Blank1:null});
             } else {
                 const errorData = await response.json();
                 alert(`Error saving signal1: ${errorData.error || 'Please try again.'}`);
@@ -100,6 +115,7 @@ function SignalComp() {
                         <CTableHeaderCell>Date/Time</CTableHeaderCell>
                         <CTableHeaderCell>Take Profit</CTableHeaderCell>
                         <CTableHeaderCell>Stop Loss</CTableHeaderCell>
+                        <CTableHeaderCell>Image</CTableHeaderCell>
                         <CTableHeaderCell>Active</CTableHeaderCell>
                         <CTableHeaderCell>Actions</CTableHeaderCell>
                       </CTableRow>
@@ -114,6 +130,7 @@ function SignalComp() {
                           <CTableDataCell>{signal.Date} / {signal.Time}</CTableDataCell>
                           <CTableDataCell>{signal.TakeProfit}</CTableDataCell>
                           <CTableDataCell>{signal.StopLoss}</CTableDataCell>
+                          <CTableDataCell><CTableDataCell><img src={"https://coinselection.fun/admin_api/"+signal.Blank1} alt="Signal" width="50" /></CTableDataCell></CTableDataCell>
                           <CTableDataCell><CBadge color={signal.Active == 1 ? 'success' : 'danger'}>{signal.Active == 1 ? 'Active' : 'Inactive'}</CBadge></CTableDataCell>
                           <CTableDataCell>
                             <CButton color="warning" size="sm" className="me-2" onClick={() => { setModal(true); setEditData(signal); setFormData(signal); }}>
@@ -146,6 +163,7 @@ function SignalComp() {
                 <CFormInput className="mb-2" name="Time" value={formData.Time} onChange={handleChange} type="time" placeholder="Time" />
                 <CFormInput className="mb-2" name="TakeProfit" value={formData.TakeProfit} onChange={handleChange} placeholder="Take Profit" />
                 <CFormInput className="mb-2" name="StopLoss" value={formData.StopLoss} onChange={handleChange} placeholder="Stop Loss" />
+                <CFormInput className="mb-2" name="Blank1" type="file" onChange={handleChange_file} />
                 <CFormSelect 
                  aria-label="Default select example"
                  name="Active"
