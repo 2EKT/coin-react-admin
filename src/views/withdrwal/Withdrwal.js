@@ -32,12 +32,14 @@ const WithdrawalTable = () => {
     }
   };
 
-  const updateStatus = async (id, status) => {
+  const updateStatus = async (id, status ,email,amount) => {
     try {
       // { id, status }
       const formData = new FormData();
       formData.append('id', id);
       formData.append('status',status);
+      formData.append('email',email);
+      formData.append('amount',amount);
       await fetch('https://coinselection.fun/admin_api/update_withdrawal_status.php', {
         method: 'POST',
         // headers: { 'Content-Type': 'application/json' },
@@ -101,7 +103,7 @@ const WithdrawalTable = () => {
                 <CTableDataCell>
                   <CFormSelect
                     // value={withdrawal.status}
-                    onChange={(e) => updateStatus(withdrawal.id, e.target.value)}
+                    onChange={(e) => updateStatus(withdrawal.id, e.target.value , withdrawal.user_email , withdrawal.amount )}
                     defaultValue={ withdrawal.status }
                   >
                    
