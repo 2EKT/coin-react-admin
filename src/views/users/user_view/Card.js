@@ -13,7 +13,7 @@ import {
   CTableBody,
   CTableDataCell,
   CImage,
-  CBadge
+  CBadge,
 } from '@coreui/react'
 
 function Card() {
@@ -80,15 +80,14 @@ function Card() {
       const formData = new FormData()
       formData.append('id', id)
 
-      const response = await fetch(
-        'https://coinselection.fun/admin_api/fetch_Payments_by_id.php',
-        {
-          method: 'POST',
-          body: formData,
-        },
-      )
+      const response = await fetch('https://coinselection.fun/admin_api/fetch_Payments_by_id.php', {
+        method: 'POST',
+        body: formData,
+      })
 
       const data = await response.json()
+      // console.log(data);
+      
       if (data[0].result != 0) {
         // setTransactions(data || [])
         setWithdrawals(data || [])
@@ -108,7 +107,7 @@ function Card() {
       formData.append('id', id)
 
       const response = await fetch(
-        'https://coinselection.fun/admin_api/fetch_withdrawal_with_id.php',
+        'https://coinselection.fun/admin_api/fetch_withreferrals_with_id.php',
         {
           method: 'POST',
           body: formData,
@@ -249,18 +248,19 @@ function Card() {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {withdrawals.length > 0 ?
-                  (
-                    withdrawals
-                      .map((wd) => (
-                        <CTableRow key={wd.Id}>
-                          <CTableDataCell>{wd.Date}</CTableDataCell>
-                          <CTableDataCell>${wd.Amount}</CTableDataCell>
-                          <CTableDataCell>  <CBadge color={wd.Payment_Success == 1  ? 'success' : 'danger'}>
-                                                              {wd.Payment_Success  == 1  ? 'Success' : 'Fail'}
-                                                            </CBadge></CTableDataCell>
-                        </CTableRow>
-                      ))
+                  {withdrawals.length > 0 ? (
+                    withdrawals.map((wd) => (
+                      <CTableRow key={wd.Id}>
+                        <CTableDataCell>{wd.Date}</CTableDataCell>
+                        <CTableDataCell>${wd.Amount}</CTableDataCell>
+                        <CTableDataCell>
+                          {' '}
+                          <CBadge color={wd.Payment_Success == 1 ? 'success' : 'danger'}>
+                            {wd.Payment_Success == 1 ? 'Success' : 'Fail'}
+                          </CBadge>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))
                   ) : (
                     <CTableRow>
                       <CTableDataCell colSpan="3" className="text-center text-muted">

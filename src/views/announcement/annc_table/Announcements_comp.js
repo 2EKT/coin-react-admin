@@ -16,7 +16,12 @@ function Announcements_comp() {
     const [content, setContent] = useState('');
     const config = useMemo(() => ({
         readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-        placeholder:   'Enter View Detail'
+        placeholder:   'Enter View Detail',
+        // editorClassName: 'editor-class',
+        style: {
+            background: '#27272E',
+            color: 'rgba(255,255,255,0.5)',
+        },
     }),
     []
 );
