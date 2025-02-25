@@ -10,38 +10,48 @@ const WidgetsDropdown = (props) => {
   useEffect(() => {
     // Replace this with your actual API call
     const fetchData = async () => {
-      const response = {
-        "result": 1,
-        "total_free_users": "5",
-        "total_paid_users": "1",
-        "new_users": [
-          { "Id": "4", "FirstName": "", "LastName": "", "Email": "b@b.com", "Phone": "" },
-          { "Id": "5", "FirstName": "", "LastName": "", "Email": "v@v.com", "Phone": "" },
-          { "Id": "6", "FirstName": "", "LastName": "", "Email": "f@f.com", "Phone": "" },
-          { "Id": "7", "FirstName": "", "LastName": "", "Email": "", "Phone": "" },
-          { "Id": "1", "FirstName": "John", "LastName": "Doe", "Email": "j@j.com", "Phone": "+1234567890" },
-          { "Id": "2", "FirstName": "Jane", "LastName": "Smith", "Email": "jane.smith@example.com", "Phone": "9876543210" }
-        ],
-        "weekly_users": [{ "enroll_date": "2025-02-11", "user_count": "4" },{ "enroll_date": "2025-02-12", "user_count": "6" }],
-        "total_announcements": "8",
-        "total_todays_signals": "0"
-      };
+      try {
+        const response = await fetch("https://coinselection.fun/admin_api/dash_data.php");
+        const data = await response.json();
+        setData(data);
+        const labels = data.weekly_users.map(item => item.enroll_date);
+        const dataPoints = data.weekly_users.map(item => parseInt(item.user_count, 10));
+        setChartData({
+          labels,
+          datasets: [{
+            label: 'Users Registered (Last 7 Days)',
+            backgroundColor: '#4e73df',
+            borderColor: '#4e73df',
+            data: dataPoints,
+          }],
+        });
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    
+      // const response = {
+      //   "result": 1,
+      //   "total_free_users": "5",
+      //   "total_paid_users": "1",
+      //   "new_users": [
+      //     { "Id": "4", "FirstName": "", "LastName": "", "Email": "b@b.com", "Phone": "" },
+      //     { "Id": "5", "FirstName": "", "LastName": "", "Email": "v@v.com", "Phone": "" },
+      //     { "Id": "6", "FirstName": "", "LastName": "", "Email": "f@f.com", "Phone": "" },
+      //     { "Id": "7", "FirstName": "", "LastName": "", "Email": "", "Phone": "" },
+      //     { "Id": "1", "FirstName": "John", "LastName": "Doe", "Email": "j@j.com", "Phone": "+1234567890" },
+      //     { "Id": "2", "FirstName": "Jane", "LastName": "Smith", "Email": "jane.smith@example.com", "Phone": "9876543210" }
+      //   ],
+      //   "weekly_users": [{ "enroll_date": "2025-02-11", "user_count": "4" },{ "enroll_date": "2025-02-12", "user_count": "6" }],
+      //   "total_announcements": "8",
+      //   "total_todays_signals": "0"
+      // };
 
-      setData(response);
+   
 
       // Process weekly users data for the chart
-      const labels = response.weekly_users.map(item => item.enroll_date);
-      const dataPoints = response.weekly_users.map(item => parseInt(item.user_count, 10));
+    
 
-      setChartData({
-        labels,
-        datasets: [{
-          label: 'Users Registered (Last 7 Days)',
-          backgroundColor: '#4e73df',
-          borderColor: '#4e73df',
-          data: dataPoints,
-        }],
-      });
+    
     };
 
     fetchData();
