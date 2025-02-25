@@ -197,7 +197,7 @@ function Card() {
         <CCol md={6}>
           <CCard className="shadow-lg">
             <CCardHeader className="bg-warning text-white">
-              <h5>Transaction History</h5>
+              <h5>With Drawal History</h5>
             </CCardHeader>
             <CCardBody>
               <CTable striped hover responsive>
@@ -236,7 +236,8 @@ function Card() {
         <CCol md={6}>
           <CCard className="shadow-lg">
             <CCardHeader className="bg-danger text-white">
-              <h5>With Drawal History</h5>
+              
+              <h5>Transaction History</h5>
             </CCardHeader>
             <CCardBody>
               <CTable striped hover responsive>
