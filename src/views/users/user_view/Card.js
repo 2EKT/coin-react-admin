@@ -118,6 +118,7 @@ function Card() {
       if (data[0].result != 0) {
         seteferrals(data)
       }
+      console.log('fetchreferralsById', data)
       // console.log(data[0]);
       // setUser(data[0]);
       // setTransactions(data || []);
@@ -289,7 +290,9 @@ function Card() {
                   <CTableRow>
                     <CTableHeaderCell>Name</CTableHeaderCell>
                     <CTableHeaderCell>Email</CTableHeaderCell>
+                    <CTableHeaderCell>Amount</CTableHeaderCell>
                     <CTableHeaderCell>date</CTableHeaderCell>
+                    <CTableHeaderCell>Status</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -297,8 +300,15 @@ function Card() {
                     referrals.map((rf) => (
                       <CTableRow key={rf.id}>
                         <CTableDataCell>{rf.name}</CTableDataCell>
-                        <CTableDataCell>{rf.user_email}</CTableDataCell>
+                        <CTableDataCell>{rf.email}</CTableDataCell>
+                        <CTableDataCell>{rf.amount}</CTableDataCell>
                         <CTableDataCell>{rf.date}</CTableDataCell>
+                        <CTableDataCell>
+                          {' '}
+                          <CBadge color={rf.active == 1 ? 'success' : 'danger'}>
+                            {rf.active == 1 ? 'Success' : 'Fail'}
+                          </CBadge>
+                        </CTableDataCell>
                       </CTableRow>
                     ))
                   ) : (
