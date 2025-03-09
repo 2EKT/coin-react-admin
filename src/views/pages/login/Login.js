@@ -22,13 +22,23 @@ const Login = () => {
   const navigate = useNavigate();
   const handleLogin = async() => {
     if (username && password) {
-      const response = await fetch(`https://coinselection.fun/admin_api/select_login.php?email=${username}&pass=${password}`);
+      const formData = new FormData();
+      formData.append('email', username);
+      formData.append('pass',password);
+      
+      const response = await fetch('https://coinselection.fun/admin_api/select_login.php', {
+        method: 'POST',
+
+        body: formData,
+      });
+      // const response = await fetch(`https://coinselection.fun/admin_api/select_login.php?email=${username}&pass=${password}`);
       
       const result = await response.json();
       console.log(result);
       if (result[0].result === "1") {
-      localStorage.setItem('username', username);
-      localStorage.setItem('password', password);
+      localStorage.setItem('token', result[0].token);
+      localStorage.setItem('usernamees', username);
+      localStorage.setItem('passwordes', password);
       navigate('/dashboard');
       } else {
         alert("Wrong Credentials");

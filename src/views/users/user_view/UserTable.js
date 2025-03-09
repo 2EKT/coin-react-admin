@@ -48,7 +48,12 @@ const UserTable = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://coinselection.fun/admin_api/fetch_users.php");
+      const token = localStorage.getItem('token')
+      if(token == null){
+        return false
+      }
+      const response = await fetch(`https://coinselection.fun/admin_api/fetch_users.php?token=${token}`);
+
       const data = await response.json();
       setUsersApi(data);
     } catch (error) {
@@ -114,8 +119,10 @@ const UserTable = () => {
   const updateSubscription = async () => {
     try {
       const formData = new FormData();
+      const token = localStorage.getItem('token')
       formData.append('userId', selectedUser);
       formData.append('planId',selectedPlan);
+      formData.append('token',token);
       await fetch('https://coinselection.fun/admin_api/update_subscription.php', {
         method: 'POST',
         // headers: { 'Content-Type': 'application/json' },

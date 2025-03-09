@@ -8,8 +8,9 @@ const Logout = () => {
 
   // ✅ Handle logout
   const handleLogout = () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
+    localStorage.removeItem('usernamees');
+    localStorage.removeItem('passwordes');
+    localStorage.removeItem('token');
     navigate('/login'); // Redirect to login page
   };
 
