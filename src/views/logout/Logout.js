@@ -7,7 +7,16 @@ const Logout = () => {
   const navigate = useNavigate();
 
   // ✅ Handle logout
-  const handleLogout = () => {
+  const handleLogout = async () => {
+   const token =  localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('token', token);
+    const data = await fetch('https://coinselection.fun/admin_api/logout.php', {
+      method: 'POST',
+      body: formData,
+    });
+    const response = await data.json();
+    
     localStorage.removeItem('usernamees');
     localStorage.removeItem('passwordes');
     localStorage.removeItem('token');

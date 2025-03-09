@@ -7,9 +7,9 @@ const DefaultLayout = () => {
   useEffect(() => {
     const username = localStorage.getItem('usernamees');
     const password = localStorage.getItem('passwordes');
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
-    if (!username || !password || token) {
+    if (!username || !password) {
       navigate('/login'); // Redirect if not logged in
     }
   }, [navigate]);
